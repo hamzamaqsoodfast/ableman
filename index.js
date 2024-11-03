@@ -4,27 +4,32 @@ const app = express();
 app.use(express.json());
 
 app.post('/sendToMonday', async (req, res) => {
-  const { name, email, subject, message } = req.body;
+  const { fname, lname, email, phone, companyname } = req.body;
  
 
   // Log values to ensure they are being received correctly
-  console.log("Name:", name);
+  console.log("First Name:", fname);
+  console.log("Last Name:", lname);
   console.log("Email:", email);
-  console.log("Subject:", subject);
-  console.log("Message:", message);
+  console.log("Phone:", phone);
+  console.log("Company Name:", companyname);
 
   // Fetch environment variables for secure API access
   const mondayToken = 'eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjQzMTQ5MDY2OCwiYWFpIjoxMSwidWlkIjo2NzgyNDc3MywiaWFkIjoiMjAyNC0xMS0wM1QxMDo0OToyMi4wMDBaIiwicGVyIjoibWU6d3JpdGUiLCJhY3RpZCI6MTQ5NDQ5MTQsInJnbiI6InVzZTEifQ.M2y5qvKTBugSmKQLJnPFinl9o1h0H70yCAVnsM75p0M';
-  const boardId = '7768594312';
+  const boardId = '7764884262';
   const groupId = 'topics';
 
-  // Define the query and column values for Monday.com
   const columnValues = JSON.stringify({
-    "short_text__1": name || "",  // Ensure defaults to empty string if undefined
-    "short_text5__1": email || "",
-    "long_text__1": subject || "",
-    "long_text2__1": message || ""
+    "short_text5__1": fname || "",         // First Name
+    "short_text4__1": lname || "",         // Last Name
+    "email6__1": {                         // Email field
+      "email": email || "",
+      "text": email || ""                  // Display text
+    },
+    "number7__1": phone || "",             // Phone
+    "short_text1__1": companyname || ""    // Company Name
   });
+  
 
   const query = `
     mutation ($boardId: ID!, $groupId: String!, $itemName: String!, $columnValues: JSON!) {
@@ -41,7 +46,7 @@ app.post('/sendToMonday', async (req, res) => {
   const variables = {
     boardId: boardId,
     groupId: groupId,
-    itemName: String(name || "No Name Provided"),  // Fallback if name is undefined
+    itemName: String(fname || "No Name Provided"),  // Fallback if name is undefined
     columnValues: columnValues
   };
 
