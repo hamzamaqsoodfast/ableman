@@ -26,7 +26,7 @@ app.post('/sendToMonday', async (req, res) => {
       "email": email || "",
       "text": email || ""                  // Display text
     },
-    "number7__1": phone || "",             // Phone
+    "number4__1": phone || "",             // Phone
     "short_text1__1": companyname || ""    // Company Name
   });
   
